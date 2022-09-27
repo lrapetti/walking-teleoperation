@@ -168,7 +168,7 @@ bool HapticGloveModule::updateModule()
 
     } else if (m_state == HapticGloveFSM::Preparing)
     {
-
+        
         bool isPrepared = true;
         if (m_useLeftHand)
         {

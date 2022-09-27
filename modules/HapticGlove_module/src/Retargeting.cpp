@@ -168,13 +168,13 @@ bool Retargeting::configure(const yarp::os::Searchable& config,
     }
 
     // get human and robot joint list and find the mapping between them
-    if (!this->semanticMapFromRobotTHuman(
-            m_humanJointNames, m_robotActuatedJointNames, m_robotToHumanJointIndicesMap))
-    {
-        yError() << m_logPrefix
-                 << "unable to find the map from robot actuated joints to the human joints";
-        return false;
-    }
+    // if (!this->semanticMapFromRobotTHuman(
+    //         m_humanJointNames, m_robotActuatedJointNames, m_robotToHumanJointIndicesMap))
+    // {
+    //     yError() << m_logPrefix
+    //              << "unable to find the map from robot actuated joints to the human joints";
+    //     return false;
+    // }
 
     // find the human finger names
     yarp::os::Value* humanFingersListYarp;

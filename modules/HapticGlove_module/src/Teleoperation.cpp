@@ -61,12 +61,12 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
     }
 
     // intialize the human glove object
-    m_humanGlove = std::make_unique<HapticGlove::GloveControlHelper>();
-    if (!m_humanGlove->configure(config, m_robot, rightHand))
-    {
-        yError() << m_logPrefix << "unable to initialize the glove control helper.";
-        return false;
-    }
+    // m_humanGlove = std::make_unique<HapticGlove::GloveControlHelper>();
+    // if (!m_humanGlove->configure(config, m_robot, rightHand))
+    // {
+    //     yError() << m_logPrefix << "unable to initialize the glove control helper.";
+    //     return false;
+    // }
 
     // initialize the retaregting object
     std::vector<std::string> robotActuatedJointNameList;
@@ -75,15 +75,15 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
 
     m_robotController->controlHelper()->getActuatedJointNames(robotActuatedJointNameList);
     m_robotController->controlHelper()->getActuatedAxisNames(robotActuatedAxisNameList);
-    m_humanGlove->getHumanHandJointsNames(humanJointNameList);
+    // m_humanGlove->getHumanHandJointsNames(humanJointNameList);
 
-    m_retargeting = std::make_unique<HapticGlove::Retargeting>(
-        robotActuatedJointNameList, robotActuatedAxisNameList, humanJointNameList);
-    if (!m_retargeting->configure(config, m_robot, rightHand))
-    {
-        yError() << m_logPrefix << "unable to initialize retargeting class.";
-        return false;
-    }
+    // m_retargeting = std::make_unique<HapticGlove::Retargeting>(
+    //     robotActuatedJointNameList, robotActuatedAxisNameList, humanJointNameList);
+    // if (!m_retargeting->configure(config, m_robot, rightHand))
+    // {
+    //     yError() << m_logPrefix << "unable to initialize retargeting class.";
+    //     return false;
+    // }
 
     std::vector<double> minAxisLimits, maxAxisLimits;
     if (!m_robotController->controlHelper()->getActuatedAxisLimits(minAxisLimits, maxAxisLimits))
@@ -92,12 +92,12 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
         return false;
     }
 
-    if (!m_retargeting->setRobotAxisLimits(minAxisLimits, maxAxisLimits))
-    {
-        yError() << m_logPrefix
-                 << "unable to set limits of robot actuated axes for retargeting class.";
-        return false;
-    }
+    // if (!m_retargeting->setRobotAxisLimits(minAxisLimits, maxAxisLimits))
+    // {
+    //     yError() << m_logPrefix
+    //              << "unable to set limits of robot actuated axes for retargeting class.";
+    //     return false;
+    // }
 
     std::vector<double> minJointLimits, maxJointLimits;
     if (!m_robotController->controlHelper()->getActuatedJointLimits(minJointLimits, maxJointLimits))
@@ -106,12 +106,12 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
         return false;
     }
 
-    if (!m_retargeting->setRobotJointLimits(minJointLimits, maxJointLimits))
-    {
-        yError() << m_logPrefix
-                 << "unable to set limits of robot actuated joints for retargeting class.";
-        return false;
-    }
+    // if (!m_retargeting->setRobotJointLimits(minJointLimits, maxJointLimits))
+    // {
+    //     yError() << m_logPrefix
+    //              << "unable to set limits of robot actuated joints for retargeting class.";
+    //     return false;
+    // }
 
     if (m_useSkin)
     {
@@ -131,9 +131,9 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
         = m_robotController->controlHelper()->getNumberOfActuatedJoints();
     const size_t numRobotFingers = m_robotController->controlHelper()->getNumberOfRobotFingers();
 
-    const size_t numHumanHandJoints = m_humanGlove->getNumOfHandJoints();
-    const size_t numHumanForceFeedback = m_humanGlove->getNumOfForceFeedback();
-    const size_t numHumanVibrotactileFeedback = m_humanGlove->getNumOfVibrotactileFeedbacks();
+    // const size_t numHumanHandJoints = m_humanGlove->getNumOfHandJoints();
+    // const size_t numHumanForceFeedback = m_humanGlove->getNumOfForceFeedback();
+    // const size_t numHumanVibrotactileFeedback = m_humanGlove->getNumOfVibrotactileFeedbacks();
 
     // initialize the vectors
     // robot
@@ -158,9 +158,9 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
     m_data.robotAxisCovReferencesKf = Eigen::MatrixXd::Zero(numRobotActuatedAxis, 9);
 
     // human
-    m_data.humanJointValues.resize(numHumanHandJoints, 0.0);
-    m_data.humanVibrotactileFeedbacks.resize(numHumanVibrotactileFeedback, 0.0);
-    m_data.humanForceFeedbacks.resize(numHumanForceFeedback, 0.0);
+    // m_data.humanJointValues.resize(numHumanHandJoints, 0.0);
+    // m_data.humanVibrotactileFeedbacks.resize(numHumanVibrotactileFeedback, 0.0);
+    // m_data.humanForceFeedbacks.resize(numHumanForceFeedback, 0.0);
 
     // skin
     m_data.doRobotFingerSkinsWork.resize(numRobotFingers, 0.0);
@@ -169,15 +169,18 @@ bool Teleoperation::configure(const yarp::os::Searchable& config,
     m_data.robotFingerSkinDerivativeValueVibrotactileFeedbacks.resize(numRobotFingers, 0.0);
     m_data.robotFingerSkinTotalValueVibrotactileFeedbacks.resize(numRobotFingers, 0.0);
 
+    std::cerr << "Before Logger" << std::endl;
+
     // set up the glove
-    if (!m_humanGlove->setupGlove())
-    {
-        yError() << m_logPrefix << "cannot setup the glove.";
-        return false;
-    }
+    // if (!m_humanGlove->setupGlove())
+    // {
+    //     yError() << m_logPrefix << "cannot setup the glove.";
+    //     return false;
+    // }
 
     // logger
-    m_enableLogger = config.check("enableLogger", yarp::os::Value(0)).asBool();
+    m_enableLogger = false;
+    // m_enableLogger = config.check("enableLogger", yarp::os::Value(0)).asBool();
 
     if (m_enableLogger)
     {
@@ -239,48 +242,48 @@ bool Teleoperation::run()
 {
 
     // retarget human motion to the robot
-    if (!m_humanGlove->getHandJointAngles(m_data.humanJointValues))
-    {
-        yWarning() << m_logPrefix << "unable to get human latest joint angles.";
-    }
+    // if (!m_humanGlove->getHandJointAngles(m_data.humanJointValues))
+    // {
+    //     yWarning() << m_logPrefix << "unable to get human latest joint angles.";
+    // }
 
-    if (!m_retargeting->retargetHumanMotionToRobot(m_data.humanJointValues))
-    {
-        yWarning() << m_logPrefix << "unable to retaget human motion to robot motions.";
-    }
+    // if (!m_retargeting->retargetHumanMotionToRobot(m_data.humanJointValues))
+    // {
+    //     yWarning() << m_logPrefix << "unable to retaget human motion to robot motions.";
+    // }
 
-    if (!m_retargeting->getRobotJointReferences(m_data.robotJointReferences))
-    {
-        yWarning() << m_logPrefix << "unable to get the robot joint references from retargeting.";
-    }
+    // if (!m_retargeting->getRobotJointReferences(m_data.robotJointReferences))
+    // {
+    //     yWarning() << m_logPrefix << "unable to get the robot joint references from retargeting.";
+    // }
 
-    if (!m_robotController->setJointReferences(m_data.robotJointReferences))
-    {
-        yWarning() << m_logPrefix << "unable to set the joint references to the robot.";
-    }
+    // if (!m_robotController->setJointReferences(m_data.robotJointReferences))
+    // {
+    //     yWarning() << m_logPrefix << "unable to set the joint references to the robot.";
+    // }
 
-    // since we have estimators for the references, we put the getFeedback method at this point.
+    // // since we have estimators for the references, we put the getFeedback method at this point.
 
-    if (!this->getFeedbacks())
-    {
-        yWarning() << m_logPrefix << "unable to get the feedback";
-    }
+    // if (!this->getFeedbacks())
+    // {
+    //     yWarning() << m_logPrefix << "unable to get the feedback";
+    // }
 
-    if (!m_robotController->computeControlSignals())
-    {
-        yWarning() << m_logPrefix << "unable to compute the control signals.";
-    }
+    // if (!m_robotController->computeControlSignals())
+    // {
+    //     yWarning() << m_logPrefix << "unable to compute the control signals.";
+    // }
 
-    // compute the haptic feedback
-    if (!m_retargeting->retargetHapticFeedbackFromRobotToHumanUsingKinestheticData(
-            m_data.robotAxisValueReferencesKf,
-            m_data.robotAxisVelocityReferencesKf,
-            m_data.robotAxisValueFeedbacksKf,
-            m_data.robotAxisVelocityFeedbacksKf))
-    {
-        yWarning() << m_logPrefix
-                   << "unable to retarget haptic feedback from the robot to the human.";
-    }
+    // // compute the haptic feedback
+    // if (!m_retargeting->retargetHapticFeedbackFromRobotToHumanUsingKinestheticData(
+    //         m_data.robotAxisValueReferencesKf,
+    //         m_data.robotAxisVelocityReferencesKf,
+    //         m_data.robotAxisValueFeedbacksKf,
+    //         m_data.robotAxisVelocityFeedbacksKf))
+    // {
+    //     yWarning() << m_logPrefix
+    //                << "unable to retarget haptic feedback from the robot to the human.";
+    // }
 
     if (m_useSkin)
     {
@@ -310,28 +313,28 @@ bool Teleoperation::run()
         //        m_data.robotFingerSkinTotalValueVibrotactileFeedbacks;
 
         // compute haptic feedback with consideration of the skin
-        m_retargeting->retargetHapticFeedbackFromRobotToHumanUsingSkinData(
-            m_data.doRobotFingerSkinsWork,
-            m_data.areFingersSkinInContact,
-            m_data.robotFingerSkinTotalValueVibrotactileFeedbacks);
+        // m_retargeting->retargetHapticFeedbackFromRobotToHumanUsingSkinData(
+        //     m_data.doRobotFingerSkinsWork,
+        //     m_data.areFingersSkinInContact,
+        //     m_data.robotFingerSkinTotalValueVibrotactileFeedbacks);
     }
 
-    if (!m_retargeting->getForceFeedbackToHuman(m_data.humanForceFeedbacks))
-    {
-        yWarning() << m_logPrefix << "unable to get the force feedback from retargeting.";
-    }
+    // if (!m_retargeting->getForceFeedbackToHuman(m_data.humanForceFeedbacks))
+    // {
+    //     yWarning() << m_logPrefix << "unable to get the force feedback from retargeting.";
+    // }
 
-    if (!m_retargeting->getVibrotactileFeedbackToHuman(m_data.humanVibrotactileFeedbacks))
-    {
-        yWarning() << m_logPrefix << "unable to get the vibrotactile feedback from retargeting.";
-    }
+    // if (!m_retargeting->getVibrotactileFeedbackToHuman(m_data.humanVibrotactileFeedbacks))
+    // {
+    //     yWarning() << m_logPrefix << "unable to get the vibrotactile feedback from retargeting.";
+    // }
 
     // set the values
     if (m_moveRobot)
     {
-        m_robotController->move();
-        m_humanGlove->setFingertipForceFeedbackReferences(m_data.humanForceFeedbacks);
-        m_humanGlove->setFingertipVibrotactileFeedbackReferences(m_data.humanVibrotactileFeedbacks);
+        // m_robotController->move();
+        // m_humanGlove->setFingertipForceFeedbackReferences(m_data.humanForceFeedbacks);
+        // m_humanGlove->setFingertipVibrotactileFeedbackReferences(m_data.humanVibrotactileFeedbacks);
     }
 
     if (m_enableLogger)
@@ -375,17 +378,18 @@ bool Teleoperation::prepare(bool& isPrepared)
             }
         }
         // human
-        if (m_getHumanMotionRange)
-        {
-            std::vector<double> humanHandJointRangeMin, humanHandJointRangeMax;
-            m_humanGlove->getHumanFingerJointsMotionRange(humanHandJointRangeMin,
-                                                          humanHandJointRangeMax);
-            m_retargeting->computeJointAngleRetargetingParams(humanHandJointRangeMin,
-                                                              humanHandJointRangeMax);
-        }
+        // if (m_getHumanMotionRange)
+        // {
+        //     std::vector<double> humanHandJointRangeMin, humanHandJointRangeMax;
+        //     m_humanGlove->getHumanFingerJointsMotionRange(humanHandJointRangeMin,
+        //                                                   humanHandJointRangeMax);
+        //     m_retargeting->computeJointAngleRetargetingParams(humanHandJointRangeMin,
+        //                                                       humanHandJointRangeMax);
+        // }
         // skin
         if (m_useSkin)
         {
+            std::cerr << "Compute calibration parameters" << std::endl;
             m_robotSkin->computeCalibrationParamters();
         }
 
@@ -394,17 +398,18 @@ bool Teleoperation::prepare(bool& isPrepared)
 
         double time = double(dTime % CouplingConstant) * m_dT * (M_PI / m_calibrationTimePeriod);
         // robot
-        m_robotController->LogDataToCalibrateRobotAxesJointsCoupling(time, axisNumber);
+        // m_robotController->LogDataToCalibrateRobotAxesJointsCoupling(time, axisNumber);
         // human
 
-        if (m_getHumanMotionRange)
-        {
-            m_humanGlove->findHumanMotionRange();
-        }
+        // if (m_getHumanMotionRange)
+        // {
+        //     m_humanGlove->findHumanMotionRange();
+        // }
 
         // skin
         if (m_useSkin)
         {
+            std::cerr << ">>>>>>>>>>>>> collect data for calibration" << std::endl;
             m_robotSkin->collectSkinDataForCalibration();
         }
     }
@@ -437,11 +442,11 @@ bool Teleoperation::wait()
 {
     bool ok = true;
 
-    if (!m_humanGlove->stopHapticFeedback())
-    {
-        yWarning() << m_logPrefix << "cannot stop haptic feedback.";
-        ok &= false;
-    }
+    // if (!m_humanGlove->stopHapticFeedback())
+    // {
+    //     yWarning() << m_logPrefix << "cannot stop haptic feedback.";
+    //     ok &= false;
+    // }
 
     return ok;
 }
@@ -460,11 +465,11 @@ bool Teleoperation::close()
             ok &= false;
         }
     }
-    if (!m_humanGlove->stopHapticFeedback())
-    {
-        yWarning() << m_logPrefix << "cannot stop haptic feedback.";
-        ok &= false;
-    }
+    // if (!m_humanGlove->stopHapticFeedback())
+    // {
+    //     yWarning() << m_logPrefix << "cannot stop haptic feedback.";
+    //     ok &= false;
+    // }
 
     //  in order to be sure the stop haptic command is sent before closing the module, otherwise the
     //  glove may continue to provide the haptic feedback according to the last sent command.
@@ -485,17 +490,17 @@ bool Teleoperation::close()
         ok &= false;
     }
 
-    if (!m_humanGlove->close())
-    {
-        yWarning() << m_logPrefix << "unable to close the human and glove control helper.";
-        ok &= false;
-    }
+    // if (!m_humanGlove->close())
+    // {
+    //     yWarning() << m_logPrefix << "unable to close the human and glove control helper.";
+    //     ok &= false;
+    // }
 
-    if (!m_retargeting->close())
-    {
-        yWarning() << m_logPrefix << "unable to close the retargeting.";
-        ok &= false;
-    }
+    // if (!m_retargeting->close())
+    // {
+    //     yWarning() << m_logPrefix << "unable to close the retargeting.";
+    //     ok &= false;
+    // }
 
     yInfo() << m_logPrefix << "closed" << (ok ? "Successfully" : "badly") << ".";
 

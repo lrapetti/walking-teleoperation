@@ -389,15 +389,6 @@ void RobotSkin::computeMaxContactStrength()
             = (m_areFingersInContact[i] ? m_fingersTactileData[i].maxTactileFeedbackAbsoluteValue()
                                         : 0);
 
-        // check the strength chenages of the tactile feedback
-        m_fingersContactStrengthDerivate[i]
-            = (m_areFingersInContact[i]
-                   ? m_fingersTactileData[i].maxTactileFeedbackDerivativeValue()
-                   : 0);
-
-        //        m_fingersContactStrengthDerivate[i]
-        //            = (true ? m_fingersTactileData[i].maxTactileFeedbackDerivativeValue() : 0);
-
         //        yInfo() << " [before] fingersContactStrengthDerivate: " << i
         //                << m_fingersContactStrengthDerivate[i];
 

@@ -237,7 +237,6 @@ void RobotSkin::updateCalibratedTactileData()
 
                 if (tactileDerivative > m_tactileUpdateThreshold)
                 {
-                    tactileDerivative = tactileDerivative - finger.biasTactileSensorDerivative[i];
 
                     finger.tactileDataDerivative[i] = tactileDerivative;
                     //                    yInfo() << "tactile derivative: " << finger.fingerName

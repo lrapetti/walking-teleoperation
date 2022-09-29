@@ -140,11 +140,11 @@ bool RobotSkin::configure(const yarp::os::Searchable& config,
                      << "from the config file.";
             return false;
         }
-        if (tactileInfo.size() != 6)
+        if (tactileInfo.size() != 8)
         {
             yError() << m_logPrefix << "tactile senor indices for "
                      << fingerdata.fingerName + "_tactile_indices"
-                     << "size should be 5, but it is not.";
+                     << "size should be 8, but it is not.";
             return false;
         }
         bool check = (std::round(tactileInfo[0]) >= 0) && (std::round(tactileInfo[1]) > 0)
@@ -168,9 +168,11 @@ bool RobotSkin::configure(const yarp::os::Searchable& config,
         fingerdata.noTactileSensors = fingerdata.indexEnd - fingerdata.indexStart + 1;
 
         fingerdata.contactThresholdValue = tactileInfo[2];
-        fingerdata.vibrotactileGain = tactileInfo[3];
-        fingerdata.vibrotactileDerivativeGain = tactileInfo[4];
+        fingerdata.contactThresholdMultiplier = tactileInfo[3];
+        fingerdata.vibrotactileGain = tactileInfo[4];
         fingerdata.contactDerivativeThresholdValue = tactileInfo[5];
+        fingerdata.contactDerivativeThresholdMultiplier = tactileInfo[6];
+        fingerdata.vibrotactileDerivativeGain = tactileInfo[7];
 
         fingerdata.rawTactileData.resize(fingerdata.noTactileSensors);
         fingerdata.tactileData.resize(fingerdata.noTactileSensors, 0.0);
@@ -370,7 +372,6 @@ void RobotSkin::computeAreFingersInContact()
     {
         m_areFingersInContact[i] = m_fingersTactileData[i].maxTactileFeedbackAbsoluteValue()
                                    > m_fingersTactileData[i].contactThreshold();
-
         m_areFingersContactChanges[i] = m_fingersTactileData[i].maxTactileFeedbackDerivativeValue()
                                         > m_fingersTactileData[i].contactDerivativeThreshold();
     }

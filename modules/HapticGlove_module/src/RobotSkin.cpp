@@ -231,7 +231,7 @@ void RobotSkin::updateCalibratedTactileData()
                     = (finger.calibratedTactileData[i] - finger.previousCalibratedTactileData[i])
                       / m_samplingTime;
 
-                if (tactileDerivative > m_tactileUpdateThreshold)
+                if (std::abs(tactileDerivative) > m_tactileUpdateThreshold)
                 {
 
                     finger.tactileDataDerivative[i] = tactileDerivative;

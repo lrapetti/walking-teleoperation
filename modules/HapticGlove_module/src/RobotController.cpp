@@ -444,29 +444,31 @@ bool RobotController::LogDataToCalibrateRobotAxesJointsCoupling(double time, int
 
 bool RobotController::trainCouplingMatrix()
 {
-    // adding bias term
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> motorsData, jointsData,
-        Bias_A;
+    if (false) {
+        // adding bias term
+        Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> motorsData, jointsData,
+            Bias_A;
 
-    motorsData.setOnes(m_axesData.rows(), m_axesData.cols() + 1);
-    motorsData.block(0, 1, m_axesData.rows(), m_axesData.cols()) = m_axesData;
-    Bias_A.resize(m_A.rows(), m_A.cols() + 1);
-    jointsData = m_jointsData;
+        motorsData.setOnes(m_axesData.rows(), m_axesData.cols() + 1);
+        motorsData.block(0, 1, m_axesData.rows(), m_axesData.cols()) = m_axesData;
+        Bias_A.resize(m_A.rows(), m_A.cols() + 1);
+        jointsData = m_jointsData;
 
-    m_linearRegressor->LearnOneShotMatrix(motorsData, jointsData, Bias_A);
+        m_linearRegressor->LearnOneShotMatrix(motorsData, jointsData, Bias_A);
 
-    std::cout << m_logPrefix << "[axes-joints coupling] Bias-A matrix:\n" << Bias_A << std::endl;
+        std::cout << m_logPrefix << "[axes-joints coupling] Bias-A matrix:\n" << Bias_A << std::endl;
 
-    m_A = Bias_A.block(0, 1, m_A.rows(), m_A.cols());
-    m_Bias = Bias_A.block(0, 0, m_Bias.rows(), 1);
+        m_A = Bias_A.block(0, 1, m_A.rows(), m_A.cols());
+        m_Bias = Bias_A.block(0, 0, m_Bias.rows(), 1);
 
-    std::cout << m_logPrefix << "[axes-joints coupling] A (coupling) matrix:\n" << m_A << std::endl;
-    std::cout << m_logPrefix << "[axes-joints coupling] B (bias) vector:\n" << m_Bias << std::endl;
+        std::cout << m_logPrefix << "[axes-joints coupling] A (coupling) matrix:\n" << m_A << std::endl;
+        std::cout << m_logPrefix << "[axes-joints coupling] B (bias) vector:\n" << m_Bias << std::endl;
 
-    m_controlCoeff.noalias()
-        = ((m_A.transpose() * m_Q * m_A + m_R).inverse()) * m_A.transpose() * m_Q;
+        m_controlCoeff.noalias()
+            = ((m_A.transpose() * m_Q * m_A + m_R).inverse()) * m_A.transpose() * m_Q;
 
-    std::cout << " QP control coefficient matrix:\n" << m_controlCoeff << std::endl;
+        std::cout << " QP control coefficient matrix:\n" << m_controlCoeff << std::endl;
+    }
 
     m_robotPrepared = true;
 

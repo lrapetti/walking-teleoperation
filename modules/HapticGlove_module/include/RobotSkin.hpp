@@ -116,7 +116,7 @@ struct HapticGlove::FingertipTactileData
     double contactThreshold()
     {
         return contactThresholdValue 
-               + contactThresholdMultiplier * stdTactileSensor[this->maxTactileFeedbackDerivativeElement()];
+               + contactThresholdMultiplier * stdTactileSensor[this->maxTactileFeedbackElement()];
     }
 
     double contactDerivativeThreshold()

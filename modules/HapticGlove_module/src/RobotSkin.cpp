@@ -372,8 +372,9 @@ void RobotSkin::computeAreFingersInContact()
     {
         m_areFingersInContact[i] = m_fingersTactileData[i].maxTactileFeedbackAbsoluteValue()
                                    > m_fingersTactileData[i].contactThreshold();
-        m_areFingersContactChanges[i] = m_fingersTactileData[i].maxTactileFeedbackDerivativeValue()
-                                        > m_fingersTactileData[i].contactDerivativeThreshold();
+        m_areFingersContactChanges[i] = m_areFingersInContact[i] 
+                                        && (m_fingersTactileData[i].maxTactileFeedbackDerivativeValue()
+                                        > m_fingersTactileData[i].contactDerivativeThreshold());
     }
 }
 

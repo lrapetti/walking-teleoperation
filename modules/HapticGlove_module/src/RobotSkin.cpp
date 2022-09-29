@@ -43,7 +43,7 @@ bool RobotSkin::configure(const yarp::os::Searchable& config,
         = config.check("tactileWorkingThreshold ", yarp::os::Value(0.0001)).asFloat64();
 
     m_tactileUpdateThreshold
-        = config.check("tactileUpdateThreshold ", yarp::os::Value(0.0001)).asFloat64();
+        = config.check("tactileUpdateThreshold ", yarp::os::Value(-1.0)).asFloat64();
 
     m_noFingers = robotFingerNameList.size();
     m_totalNoTactile = 0;

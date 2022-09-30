@@ -278,6 +278,32 @@ public:
 
     virtual bool setAbsoluteSkinValuePercentage(const double value) override;
 
+    virtual bool setSkinDerivativeSmoothingGain(const double value) override;
+
+    virtual bool setContactFeedbackGain(const int32_t finger, const double value) override;
+
+    virtual bool setContactFeedbackGainAll(const double value) override;
+
+    virtual bool setDerivativeFeedbackGain(const int32_t finger, const double value) override;
+
+    virtual bool setDerivativeFeedbackGainAll(const double value) override;
+
+    virtual bool setContactThreshold(const int32_t finger, const double value) override;
+
+    virtual bool setContactThresholdAll(const double value) override;
+
+    virtual bool setContactThresholdMultiplier(const int32_t finger, const double value) override;
+
+    virtual bool setContactThresholdMultiplierAll(const double value) override;
+
+    virtual bool setDerivativeThreshold(const int32_t finger, const double value) override;
+
+    virtual bool setDerivativeThresholdAll(const double value) override;
+
+    virtual bool setDerivativeThresholdMultiplier(const int32_t finger, const double value) override;
+
+    virtual bool setDerivativeThresholdMultiplierAll(const double value) override;
+
     bool close();
 };
 

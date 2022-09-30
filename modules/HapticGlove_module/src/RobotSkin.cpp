@@ -595,3 +595,208 @@ bool RobotSkin::setAbsoluteSkinValuePercentage(const double value)
     m_absoluteSkinValuePercentage = value;
     return true;
 }
+
+bool RobotSkin::setSkinDerivativeSmoothingGain(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if(value<0.0 || value > 1.0 )
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setSkinDerivativeSmoothingGain with unfeasible value " 
+                   << value << "!";
+        return false;
+    }
+
+    m_smoothingGainDerivative = value;
+    return true;
+}
+
+bool RobotSkin::setContactFeedbackGain(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if(value<0.0)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setContactFeedbackGain with unfeasible value " 
+                   << value << "!";
+        return false;
+    }
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setContactFeedbackGain with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].vibrotactileGain = value;
+    return true;
+}
+
+bool RobotSkin::setContactFeedbackGainAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if(value<0.0)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setContactFeedbackGainAll with unfeasible value " 
+                   << value << "!";
+        return false;
+    }
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].vibrotactileGain = value;
+    }
+    
+    return true;
+}
+
+bool RobotSkin::setDerivativeFeedbackGain(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if(value<0.0)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setDerivativeFeedbackGain with unfeasible value " 
+                   << value << "!";
+        return false;
+    }
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setDerivativeFeedbackGain with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].vibrotactileDerivativeGain = value;
+    return true;
+}
+
+bool RobotSkin::setDerivativeFeedbackGainAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if(value<0.0)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setDerivativeFeedbackGainAll with unfeasible value " 
+                   << value << "!";
+        return false;
+    }
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].vibrotactileDerivativeGain = value;
+    }
+
+    return true;
+}
+
+bool RobotSkin::setContactThreshold(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setContactThreshold with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].contactThresholdValue = value;
+    return true;
+}
+
+bool RobotSkin::setContactThresholdAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].contactThresholdValue = value;
+    }
+
+    return true;
+}
+
+bool RobotSkin::setContactThresholdMultiplier(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setContactThresholdMultiplier with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].contactThresholdMultiplier = value;
+    return true;
+}
+
+bool RobotSkin::setContactThresholdMultiplierAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].contactThresholdMultiplier = value;
+    }
+
+    return true;
+}
+
+bool RobotSkin::setDerivativeThreshold(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setDerivativeThreshold with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].contactDerivativeThresholdValue = value;
+    return true;
+}
+
+bool RobotSkin::setDerivativeThresholdAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].contactDerivativeThresholdValue = value;
+    }
+
+    return true;
+}
+
+bool RobotSkin::setDerivativeThresholdMultiplier(const int32_t finger, const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (finger >= m_noFingers)
+    {
+        yWarning() << m_logPrefix 
+                   << "Requested setDerivativeThresholdMultiplier with invalid finger index " 
+                   << finger << "!";
+        return false;
+    }
+
+    m_fingersTactileData[finger].contactDerivativeThresholdMultiplier = value;
+    return true;
+}
+
+bool RobotSkin::setDerivativeThresholdMultiplierAll(const double value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex);
+
+    for (size_t i = 0; i < m_noFingers; i++)
+    {
+        m_fingersTactileData[i].contactDerivativeThresholdMultiplier = value;
+    }
+
+    return true;
+}

@@ -23,6 +23,9 @@
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/os/Searchable.h>
 
+// rpc service
+#include <thrift/RobotSkinService.h>
+
 namespace HapticGlove
 {
 class RobotSkin;
@@ -149,7 +152,7 @@ struct HapticGlove::FingertipTactileData
 /**
  * RobotSkin Class useful to manage the fingertip skin data.
  */
-class HapticGlove::RobotSkin
+class HapticGlove::RobotSkin : RobotSkinService
 {
 private:
     std::string m_logPrefix;
@@ -200,7 +203,12 @@ private:
                                            * absolute and derivative)for providing the vibrotactile
                                            * feedback, the value is between [0, 1]
                                            */
+    // mutex
+    std::mutex m_mutex;
 
+    // RPC port
+    yarp::os::Port m_rpcPort;
+    
     void updateCalibratedTactileData();
 
     void computeVibrotactileFeedback();
@@ -267,6 +275,8 @@ public:
      * @param fingertipTactileFeedbacks the tactile feedbacks of all the links
      */
     void fingerRawTactileFeedbacks(std::vector<double>& fingertipTactileFeedbacks);
+
+    virtual bool setAbsoluteSkinValuePercentage(const double value) override;
 
     bool close();
 };

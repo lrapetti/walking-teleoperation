@@ -44,7 +44,7 @@
   <module>
     <name>iFeelWalkingRetargetingModule</name>
     <parameters>--from iFeelWalkingRetargeting.ini</parameters>
-    <node>icub-console-gui</node>
+    <node>localhost</node>
   </module>
 
   <!-- Connections -->

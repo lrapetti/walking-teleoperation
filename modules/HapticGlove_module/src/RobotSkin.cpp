@@ -401,7 +401,8 @@ void RobotSkin::computeAreFingersInContact()
             m_fingersTactileData[i].biasTactileSensor[m_fingersLastElementInContact[i]] += 5;
         }
 
-        m_fingersLastElementInContact[i] = m_fingersTactileData[i].maxTactileFeedbackAbsoluteElement();
+        // Update last finger in contact element fi contact is detected
+        m_fingersLastElementInContact[i] = m_areFingersInContact[i] ? m_fingersTactileData[i].maxTactileFeedbackAbsoluteElement() : -1;
 
         m_areFingersContactChanges[i] = m_areFingersInContact[i]
                                         && (m_fingersContactStrengthDerivate[i]

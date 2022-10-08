@@ -165,6 +165,8 @@ private:
 
     std::vector<bool> m_areTactileSensorsWorking;
     std::vector<bool> m_areFingersInContact;
+    std::vector<double> m_fingersInContactTimer;
+    std::vector<int> m_fingersLastElementInContact;
     std::vector<bool> m_areFingersContactChanges;
 
     std::vector<double> m_fingersVibrotactileAbsoluteFeedback;

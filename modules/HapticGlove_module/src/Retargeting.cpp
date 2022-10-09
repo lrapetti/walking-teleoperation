@@ -227,26 +227,6 @@ bool Retargeting::configure(const yarp::os::Searchable& config,
                     << "robot_to_human_map not found or not valid";
             return false;
         }
-            
-        //     yarp::os::Bottle* axesHomeValuesMap = config.find("axes_custom_home_angle").asList();
-        //     for (size_t i = 0; i < axesHomeValuesMap->size(); i++)
-        //     {
-        //         yarp::os::Bottle* axisHomeValue = axesHomeValuesMap->get(i).asList();
-        //         std::string axisName = axisHomeValue->get(0).asString();
-        //         double homeVal = iDynTree::deg2rad(axisHomeValue->get(1).asFloat64()); // [rad]
-
-        //         auto axisElement
-        //             = std::find(std::begin(m_allAxisNames), std::end(m_allAxisNames), axisName);
-        //         if (axisElement == std::end(m_allAxisNames))
-        //         {
-        //             yError() << m_logPrefix << "cannot find the axis " << axisName
-        //                      << "written in `axes_custom_home_angle` among the allAxisNames.";
-        //             return false;
-        //         }
-
-        //         m_axisCustomHomeValues.insert(std::make_pair(axisName, homeVal));
-        //     }
-        // }
     }
     else {
         if (!this->getSemanticMapFromRobotToHuman(
